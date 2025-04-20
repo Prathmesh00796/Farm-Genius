@@ -5,97 +5,251 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FarmGenius - AI/ML Agriculture Assistant</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
-    <script src="https://www.google.com/maps/d/embed?mid=1yxe8VpI5cjc3jSAmEwMnCk0y9Q2B3s0&ehbc=2E312F" ></script>
+    <link rel="stylesheet" href="translation-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <div id="google_translate_element"></div>
-
-    <!-- Navbar -->
-    <nav class="navbar">
-        <div class="logo">
-            <img src="logo.png" alt="FarmGenius Logo">
-            <h1>FarmGenius</h1>
+    <!-- Google Translate Container (hidden) -->
+<div id="google-translate-element" style="display: none;"></div>
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <img src="profilehm.png" alt="User Photo">
+            <p>Welcome, <span id="user-name">Rajesh</span></p>
+            <span class="user-role">Farmer</span>
         </div>
-        <div class="nav-actions">
-            <div class="language-switcher">
-                <select id="language-select" aria-label="Select language">
-                    <option value="en">English</option>
-                    <option value="hi">हिंदी</option>
-                    <option value="pa">ਪੰਜਾਬੀ</option>
-                    <option value="ta">தமிழ்</option>
-                </select>
-            </div>
-            <button class="voice-assistant-btn" title="Voice Assistant">
-                <i class="fas fa-microphone"></i>
-            </button>
-            <div class="notification-bell">
-                <i class="fas fa-bell"></i>
-                <span class="notification-count">3</span>
-            </div>
-            <div class="user-profile" id="user-profile">
-                <img src="profile.png" alt="User Profile" id="profile-toggle">
-                <div class="dropdown-content" id="dropdown-menu">
-                    <a href="#" id="profile-link">Profile</a>
-                    <a href="#" id="logout-link">Logout</a>
-                </div>
-            </div>
-            
-        </div>
-    </nav>
-
-    <!-- Main Content Container -->
-    <main class="main-container">
-        <!-- Sidebar -->
-        <aside class="sidebar">
-            <div class="sidebar-header">
-                <img src="profilehm.png" alt="User Photo">
-                <p>Welcome, <span id="user-name">Rajesh</span></p>
-                <p class="user-role">Farmer</p>
-            </div>
-            <div class="sidebar-links">
-                <a href="#" data-page="dashboard"><i class="fas fa-home"></i> Dashboard</a>
+    
+        <!-- Scrollable container -->
+        <div class="sidebar-scroll">
+            <nav class="sidebar-links">
+                <a href="#" data-page="dashboard" class="active"><i class="fas fa-home"></i> Dashboard</a>
                 <a href="#" data-page="crop-disease"><i class="fas fa-leaf"></i> Crop Disease</a>
                 <a href="#" data-page="yield-prediction"><i class="fas fa-chart-line"></i> Yield Prediction</a>
                 <a href="#" data-page="market-info"><i class="fas fa-store"></i> Market Info</a>
                 <a href="#" data-page="nearby-markets"><i class="fas fa-map-marker-alt"></i> Nearby Markets</a>
                 <a href="#" data-page="policies"><i class="fas fa-file-alt"></i> Gov. Policies</a>
+            </nav>
+        </div>
+    
+        <div class="sidebar-footer">
+            <a href="#"><i class="fas fa-comment"></i> Feedback</a>
+            <a href="#"><i class="fas fa-question-circle"></i> Help</a>
+        </div>
+    </div>
+
+    <!-- chat bot -->
+     <!-- HTML for the chatbot component -->
+<div class="chatbot-container" id="chatbot-container">
+    <div class="chatbot-header">
+        <div class="chatbot-title">
+            <img src="logo.png" alt="FarmGenius Logo" class="chatbot-logo">
+            <h3>FarmGenius Assistant</h3>
+        </div>
+        <div class="chatbot-actions">
+            <button id="minimize-chatbot" class="chatbot-action-btn" title="Minimize">
+                <i class="fas fa-minus"></i>
+            </button>
+            <button id="close-chatbot" class="chatbot-action-btn" title="Close">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+    <div class="chatbot-body">
+        <div class="chatbot-messages" id="chatbot-messages">
+            <!-- Messages will be inserted here by JavaScript -->
+            <div class="chat-message bot">
+                <div class="message-avatar">
+                    <img src="logo.png" alt="FarmGenius Assistant">
+                </div>
+                <div class="message-content">
+                    <p>Hello, I'm FarmGenius Assistant! How can I help you today?</p>
+                    <span class="message-time">Just now</span>
+                </div>
             </div>
+        </div>
+        <div class="chatbot-suggestions">
+            <button class="suggestion-btn">What crops should I plant?</button>
+            <button class="suggestion-btn">Weather forecast</button>
+            <button class="suggestion-btn">Identify a crop disease</button>
+            <button class="suggestion-btn">Market prices</button>
+        </div>
+        <div class="chatbot-input">
+            <input type="text" id="chatbot-input-field" placeholder="Type your question here...">
+            <button id="send-message-btn" title="Send Message">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+            <button id="chatbot-mic-btn" title="Voice Input">
+                <i class="fas fa-microphone"></i>
+            </button>
+            <button id="chatbot-camera-btn" title="Take Photo">
+                <i class="fas fa-camera"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Chatbot toggle button (replaces voice assistant button) -->
+ <!-- HTML for the chatbot component -->
+<div class="chatbot-container" id="chatbot-container">
+    <div class="chatbot-header">
+        <div class="chatbot-title">
+            <img src="logo.png" alt="FarmGenius Logo" class="chatbot-logo">
+            <h3>FarmGenius Assistant</h3>
+        </div>
+        <div class="chatbot-actions">
+            <button id="minimize-chatbot" class="chatbot-action-btn" title="Minimize">
+                <i class="fas fa-minus"></i>
+            </button>
+            <button id="close-chatbot" class="chatbot-action-btn" title="Close">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+    <div class="chatbot-body">
+        <div class="chatbot-messages" id="chatbot-messages">
+            <!-- Messages will be inserted here by JavaScript -->
+            <div class="chat-message bot">
+                <div class="message-avatar">
+                    <img src="logo.png" alt="FarmGenius Assistant">
+                </div>
+                <div class="message-content">
+                    <p>Hello, I'm FarmGenius Assistant! How can I help you today?</p>
+                    <span class="message-time">Just now</span>
+                </div>
+            </div>
+        </div>
+        <div class="chatbot-suggestions">
+            <button class="suggestion-btn">What crops should I plant?</button>
+            <button class="suggestion-btn">Weather forecast</button>
+            <button class="suggestion-btn">Identify a crop disease</button>
+            <button class="suggestion-btn">Market prices</button>
+        </div>
+        <div class="chatbot-input">
+            <input type="text" id="chatbot-input-field" placeholder="Type your question here...">
+            <button id="send-message-btn" title="Send Message">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+            <button id="chatbot-mic-btn" title="Voice Input">
+                <i class="fas fa-microphone"></i>
+            </button>
+            <button id="chatbot-camera-btn" title="Take Photo">
+                <i class="fas fa-camera"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Chatbot toggle button (replaces voice assistant button) -->
+<button class="chatbot-toggle-btn" id="chatbot-toggle-btn" title="FarmGenius Assistant">
+    <i class="fas fa-robot"></i>
+</button>
+
+    
+    <!-- Navbar -->
+    <header class="navbar">
+        <div class="container">
+            <div class="navbar-content">
+                <div class="navbar-left">
+                    <button id="mobile-menu-toggle" class="mobile-menu-toggle" title="Toggle Menu">
+                        <i class="fas fa-bars" aria-hidden="true"></i>
+                    </button>
+                    <div class="logo">
+                        <img src="logo.png" alt="FarmGenius Logo">
+                        <h1>FarmGenius</h1>
+                    </div>
+                </div>
+                <div class="navbar-right">
+                    <div class="dropdown language-dropdown">
+                        <button class="dropdown-toggle">
+                            English <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a href="#" data-lang="en">English</a>
+                            <a href="#" data-lang="hi">हिंदी</a>
+                            <a href="#" data-lang="pa">ਪੰਜਾਬੀ</a>
+                            <a href="#" data-lang="ta">தமிழ்</a>
+                            <a href="#" data-lang="mr">मराठी</a>
+                        </div>
+                    </div>
+                    <button id="theme-toggle" class="theme-toggle" title="Toggle Dark Mode">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <button class="chatbot-toggle-btn" id="chatbot-toggle-btn" title="FarmGenius Assistant">
+                        <i class="fas fa-robot"></i>
+                    </button>
+                    <div class="notification-bell">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-count">3</span>
+                    </div>
+                    <div class="dropdown user-profile" id="user-profile">
+                        <img src="profilehm.png" alt="User Profile" id="profile-toggle">
+                        
+                        <div class="dropdown-menu" id="profile-dropdown">
+                            <a href=profile.html>Profile</a>
+                            <a href="#" id="logout-link">Logout</a>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <!-- Sidebar 
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <img src="profilehm.png" alt="User Photo">
+                <p>Welcome, <span id="user-name">Rajesh</span></p>
+                <span class="user-role">Farmer</span>
+            </div>
+            <nav class="sidebar-links">
+                <a href="#" data-page="dashboard" class="active"><i class="fas fa-home"></i> Dashboard</a>
+                <a href="#" data-page="crop-disease"><i class="fas fa-leaf"></i> Crop Disease</a>
+                <a href="#" data-page="yield-prediction"><i class="fas fa-chart-line"></i> Yield Prediction</a>
+                <a href="#" data-page="market-info"><i class="fas fa-store"></i> Market Info</a>
+                <a href="#" data-page="nearby-markets"><i class="fas fa-map-marker-alt"></i> Nearby Markets</a>
+                <a href="#" data-page="policies"><i class="fas fa-file-alt"></i> Gov. Policies</a>
+            </nav>
             <div class="sidebar-footer">
-                <a href="#" id="feedback-link"><i class="fas fa-comment"></i> Feedback</a>
-                <a href="#" id="help-link"><i class="fas fa-question-circle"></i> Help</a>
+                <a href="#"><i class="fas fa-comment"></i> Feedback</a>
+                <a href="#"><i class="fas fa-question-circle"></i> Help</a>
             </div>
-        </aside>
+        </div>-->
 
         <!-- Content Area -->
-        <div class="content-area">
+        <main class="content-area" id="content-area">
             <!-- Login Page -->
             <div class="page" id="login-page">
                 <div class="auth-container">
                     <div class="auth-form">
+                        <div class="auth-logo">
+                            <img src="logo.png" alt="FarmGenius Logo">
+                        </div>
                         <h2>Login to FarmGenius</h2>
+                        <p class="auth-description">Enter your credentials to access your account</p>
                         <form id="login-form">
                             <div class="form-group">
                                 <label for="login-phone">Phone/Email</label>
-                                <input type="text" id="login-phone" required>
+                                <input type="text" id="login-phone" placeholder="Enter your phone number or email" required>
                             </div>
                             <div class="form-group">
-                                <label for="login-password">Password</label>
-                                <input type="password" id="login-password" required>
+                                <div class="password-header">
+                                    <label for="login-password">Password</label>
+                                    <a href="#" id="forgot-password-link">Forgot Password?</a>
+                                </div>
+                                <input type="password" id="login-password" placeholder="Enter your password" required>
                             </div>
                             <div class="form-group">
                                 <label for="login-role">Role</label>
                                 <select id="login-role">
                                     <option value="farmer">Farmer</option>
-                                    <option value="dealer">Dealer</option>
                                 </select>
                             </div>
                             <button type="submit" class="btn btn-primary">Login</button>
                         </form>
                         <p class="auth-links">
-                            <a href="#" id="forgot-password-link">Forgot Password?</a>
-                            <a href="#" id="register-link">New User? Register</a>
+                            Don't have an account? <a href="#" id="register-link">Register</a>
                         </p>
                     </div>
                 </div>
@@ -105,43 +259,46 @@
             <div class="page" id="register-page">
                 <div class="auth-container">
                     <div class="auth-form">
-                        <h2>Register for FarmGenius</h2>
+                        <div class="auth-logo">
+                            <img src="logo.png" alt="FarmGenius Logo">
+                        </div>
+                        <h2>Create an Account</h2>
+                        <p class="auth-description">Enter your details to register for FarmGenius</p>
                         <form id="register-form">
                             <div class="form-group">
                                 <label for="register-name">Full Name</label>
-                                <input type="text" id="register-name" required>
+                                <input type="text" id="register-name" placeholder="Enter your full name" required>
                             </div>
                             <div class="form-group">
                                 <label for="register-phone">Phone Number</label>
-                                <input type="tel" id="register-phone" required>
+                                <input type="tel" id="register-phone" placeholder="Enter your phone number" required>
                             </div>
                             <div class="form-group">
                                 <label for="register-email">Email (Optional)</label>
-                                <input type="email" id="register-email">
+                                <input type="email" id="register-email" placeholder="Enter your email address">
                             </div>
                             <div class="form-group">
                                 <label for="register-location">Village/City</label>
-                                <input type="text" id="register-location" required>
+                                <input type="text" id="register-location" placeholder="Enter your village or city" required>
                             </div>
                             <div class="form-group">
                                 <label for="register-role">I am a</label>
                                 <select id="register-role">
                                     <option value="farmer">Farmer</option>
-                                    <option value="dealer">Dealer</option>
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label for="register-password">Create Password</label>
-                                <input type="password" id="register-password" required>
+                                <input type="password" id="register-password" placeholder="Create a password" required>
                             </div>
                             <div class="form-group">
                                 <label for="register-confirm-password">Confirm Password</label>
-                                <input type="password" id="register-confirm-password" required>
+                                <input type="password" id="register-confirm-password" placeholder="Confirm your password" required>
                             </div>
                             <button type="submit" class="btn btn-primary">Register</button>
                         </form>
                         <p class="auth-links">
-                            <a href="#" id="login-link">Already Registered? Login</a>
+                            Already registered? <a href="#" id="login-link">Login</a>
                         </p>
                     </div>
                 </div>
@@ -151,9 +308,15 @@
             <div class="page active" id="dashboard-page">
                 <h2 class="page-title">Farmer Dashboard</h2>
                 
-                <div class="dashboard-greeting">
-                    <h3>Welcome back, <span id="dashboard-user-name">Rajesh</span>!</h3>
-                    <p>Today is <span id="current-date">April 18, 2025</span> | Weather: <span id="current-weather">30°C, Sunny</span></p>
+                <div class="card dashboard-greeting">
+                    <div>
+                        <h3>Welcome back, <span id="dashboard-user-name">Rajesh</span>!</h3>
+                        <p>Today is <span id="current-date">April 19, 2025</span> | Weather: <span id="current-weather">30°C, Sunny</span></p>
+                    </div>
+                    <div class="greeting-actions">
+                        <button class="btn btn-outline">View Notifications</button>
+                        <a href="profile.html" class="btn btn-primary">Update Profile</a>
+                    </div>
                 </div>
                 
                 <div class="quick-actions">
@@ -164,7 +327,7 @@
                         <a href="#" class="btn" data-page="crop-disease">Scan Now</a>
                     </div>
                     <div class="action-card">
-                        <i class="fas fa-chart-bar"></i>
+                        <i class="fas fa-chart-line"></i>
                         <h4>Predict Yield</h4>
                         <p>Get yield forecasts for your crops</p>
                         <a href="#" class="btn" data-page="yield-prediction">Predict Now</a>
@@ -184,162 +347,199 @@
                 </div>
                 
                 <div class="dashboard-widgets">
-                    <div class="widget weather-forecast">
-                        <h4>7-Day Weather Forecast</h4>
-                        <div class="weather-cards">
-                            <div class="weather-day">
-                                <p>Today</p>
-                                <i class="fas fa-sun"></i>
-                                <p>30°C</p>
-                            </div>
-                            <div class="weather-day">
-                                <p>Fri</p>
-                                <i class="fas fa-cloud-sun"></i>
-                                <p>28°C</p>
-                            </div>
-                            <div class="weather-day">
-                                <p>Sat</p>
-                                <i class="fas fa-cloud"></i>
-                                <p>26°C</p>
-                            </div>
-                            <div class="weather-day">
-                                <p>Sun</p>
-                                <i class="fas fa-cloud-rain"></i>
-                                <p>25°C</p>
-                            </div>
-                            <div class="weather-day">
-                                <p>Mon</p>
-                                <i class="fas fa-cloud-sun"></i>
-                                <p>27°C</p>
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>7-Day Weather Forecast</h4>
+                        </div>
+                        <div class="card-content">
+                            <div class="weather-cards">
+                                <div class="weather-card">
+                                    <p>Today</p>
+                                    <i class="fas fa-sun"></i>
+                                    <p>30°C</p>
+                                </div>
+                                <div class="weather-card">
+                                    <p>Fri</p>
+                                    <i class="fas fa-cloud-sun"></i>
+                                    <p>28°C</p>
+                                </div>
+                                <div class="weather-card">
+                                    <p>Sat</p>
+                                    <i class="fas fa-cloud"></i>
+                                    <p>26°C</p>
+                                </div>
+                                <div class="weather-card">
+                                    <p>Sun</p>
+                                    <i class="fas fa-cloud-rain"></i>
+                                    <p>25°C</p>
+                                </div>
+                                <div class="weather-card">
+                                    <p>Mon</p>
+                                    <i class="fas fa-cloud-sun"></i>
+                                    <p>27°C</p>
+                                </div>
                             </div>
                         </div>
                     </div>
                     
-                    <div class="widget news-tips">
-                        <h4>Agricultural Tips & News</h4>
-                        <div class="news-carousel">
-                            <div class="news-item active">
-                                <h5>New Subsidy for Organic Farming</h5>
-                                <p>Government announced new subsidies for organic farmers starting May 2025.</p>
-                                <a href="#">Read More</a>
-                            </div>
-                            <div class="news-item">
-                                <h5>Pest Alert: Aphid Outbreak</h5>
-                                <p>Aphid outbreaks reported in northern regions. Check your crops regularly.</p>
-                                <a href="#">Read More</a>
-                            </div>
-                            <div class="news-item">
-                                <h5>Water Conservation Techniques</h5>
-                                <p>Learn new methods to conserve water during summer months.</p>
-                                <a href="#">Read More</a>
-                            </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>Agricultural Tips & News</h4>
                         </div>
-                        <div class="carousel-controls">
-                            <button id="prev-news" title="Previous News"><i class="fas fa-chevron-left"></i></button>
-                            <button id="next-news" title="Next News"><i class="fas fa-chevron-right"></i></button>
+                        <div class="card-content">
+                            <div class="news-carousel">
+                                <div class="news-item active">
+                                    <h5>New Subsidy for Organic Farming</h5>
+                                    <p>Government announced new subsidies for organic farmers starting May 2025.</p>
+                                    <a href="#" class="link">Read More</a>
+                                </div>
+                                <div class="news-item">
+                                    <h5>Pest Alert: Aphid Outbreak</h5>
+                                    <p>Aphid outbreaks reported in northern regions. Check your crops regularly.</p>
+                                    <a href="#" class="link">Read More</a>
+                                </div>
+                                <div class="news-item">
+                                    <h5>Water Conservation Techniques</h5>
+                                    <p>Learn new methods to conserve water during summer months.</p>
+                                    <a href="#" class="link">Read More</a>
+                                </div>
+                            </div>
+                            <div class="carousel-controls">
+                                <button id="prev-news" title="Previous News"><i class="fas fa-chevron-left"></i></button>
+                                <button id="next-news" title="Next News"><i class="fas fa-chevron-right"></i></button>
+                            </div>
                         </div>
                     </div>
                 </div>
                 
-                <div class="market-trends-widget">
-                    <h4>Market Price Trends (Last 30 Days)</h4>
-                    <div class="chart-controls">
-                        <select id="trend-crop-select" aria-label="Select crop for price trend">
-                            <option value="wheat">Wheat</option>
-                            <option value="rice">Rice</option>
-                            <option value="maize">Maize</option>
-                            <option value="potato">Potato</option>
-                        </select>
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Market Price Trends (Last 30 Days)</h4>
+                        <div class="chart-controls">
+                            <select id="trend-crop-select" aria-label="Select crop for price trend">
+                                <option value="wheat">Wheat</option>
+                                <option value="rice">Rice</option>
+                                <option value="maize">Maize</option>
+                                <option value="potato">Potato</option>
+                            </select>
+                        </div>
                     </div>
-                    <div class="chart-container">
-                        <canvas id="price-trend-chart"></canvas>
+                    <div class="card-content">
+                        <div class="chart-container">
+                            <canvas id="price-trend-chart"></canvas>
+                        </div>
                     </div>
                 </div>
             </div>
-            
 
             <!-- Crop Disease Detection Page -->
             <div class="page" id="crop-disease-page">
                 <h2 class="page-title">Crop Disease Detection</h2>
                 
                 <div class="disease-detection-container">
-                    <div class="upload-section">
-                        <div class="upload-card">
+                    <div class="disease-upload-section">
+                        <div id="upload-card" class="upload-card">
                             <i class="fas fa-cloud-upload-alt"></i>
                             <h4>Upload Crop Image</h4>
-                            <p>Take a clear photo of the affected plant part</p>
+                            <p>Take a clear photo of the affected plant part for accurate disease detection</p>
                             <input type="file" id="crop-image-upload" accept="image/*" hidden>
                             <button class="btn btn-primary" id="upload-image-btn">Choose File</button>
                             <p class="upload-hint">or drag and drop image here</p>
                         </div>
                         
-                        <div class="preview-card hidden" id="image-preview-card">
-                            <h4>Image Preview</h4>
-                            <div class="preview-image-container">
-                                <img id="preview-image" src="" alt="Crop Preview">
+                        <div id="preview-card" class="card preview-card hidden">
+                            <div class="card-header">
+                                <h4>Image Preview</h4>
                             </div>
-                            <div class="preview-actions">
-                                <button class="btn btn-secondary" id="change-image-btn">Change Image</button>
+                            <div class="card-content">
+                                <div class="preview-image-container">
+                                    <img id="preview-image" src="/placeholder.svg" alt="Crop Preview">
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <button class="btn btn-outline" id="change-image-btn">Change Image</button>
                                 <button class="btn btn-primary" id="analyze-image-btn">Analyze Disease</button>
+                            </div>
+                        </div>
+
+                        <div id="tips-card" class="card hidden">
+                            <div class="card-header">
+                                <h4>How to get the best results</h4>
+                            </div>
+                            <div class="card-content">
+                                <ul class="tips-list">
+                                    <li><i class="fas fa-check"></i> Take close-up photos of affected areas</li>
+                                    <li><i class="fas fa-check"></i> Ensure good lighting conditions</li>
+                                    <li><i class="fas fa-check"></i> Include both healthy and diseased parts for comparison</li>
+                                    <li><i class="fas fa-check"></i> Avoid shadows and reflections</li>
+                                </ul>
                             </div>
                         </div>
                     </div>
                     
-                    <div class="result-section" id="disease-result-section">
-                        <div class="result-card">
-                            <div class="result-header">
+                    <div id="disease-result-section" class="disease-result-section hidden">
+                        <div class="card">
+                            <div class="card-header">
                                 <h4>Analysis Results</h4>
-                                <span class="result-date">April 18, 2025</span>
+                                <span class="result-date" id="result-date">April 19, 2025</span>
                             </div>
-                            <div class="result-content">
+                            <div class="card-content">
                                 <div class="disease-info">
-                                    <h5>Detected Disease: <span id="disease-name">Leaf Blight</span></h5>
+                                    <h4>Detected Disease: <span class="text-primary">Leaf Blight</span></h4>
+                                    
                                     <div class="confidence">
-                                        <p>Confidence: <span id="disease-confidence">92%</span></p>
+                                        <div class="confidence-header">
+                                            <span>Confidence:</span>
+                                            <span class="confidence-value">92%</span>
+                                        </div>
                                         <div class="confidence-bar">
-                                            <div class="confidence-level" data-confidence="92"></div>
+                                            <div class="confidence-level confidence-level-0"></div>
                                         </div>
                                     </div>
+                                    
                                     <div class="disease-description">
-                                        <p id="disease-description">Leaf blight is a fungal disease that affects various crops, causing yellowing and browning of leaves, eventually leading to tissue death.</p>
+                                        <p>Leaf blight is a fungal disease that affects various crops, causing yellowing and browning of leaves, eventually leading to tissue death.</p>
                                     </div>
                                 </div>
                                 
                                 <div class="treatment-recommendations">
-                                    <h5>Recommended Actions:</h5>
-                                    <ul id="treatment-list">
-                                        <li>Remove and destroy infected leaves and plant debris</li>
-                                        <li>Apply fungicide containing chlorothalonil or mancozeb</li>
-                                        <li>Ensure proper spacing between plants for air circulation</li>
-                                        <li>Avoid overhead irrigation; water at the base of plants</li>
+                                    <h4>Recommended Actions:</h4>
+                                    <ul class="recommendations-list">
+                                        <li><i class="fas fa-check"></i> Remove and destroy infected leaves and plant debris</li>
+                                        <li><i class="fas fa-check"></i> Apply fungicide containing chlorothalonil or mancozeb</li>
+                                        <li><i class="fas fa-check"></i> Ensure proper spacing between plants for air circulation</li>
+                                        <li><i class="fas fa-check"></i> Avoid overhead irrigation; water at the base of plants</li>
                                     </ul>
                                 </div>
                             </div>
-                            
-                            <div class="result-actions">
-                                <button class="btn" id="save-result-btn"><i class="fas fa-save"></i> Save Result</button>
-                                <button class="btn" id="share-result-btn"><i class="fas fa-share-alt"></i> Share</button>
-                                <button class="btn" id="print-result-btn"><i class="fas fa-print"></i> Print</button>
+                            <div class="card-footer">
+                                <button class="btn btn-outline" id="save-result-btn"><i class="fas fa-save"></i> Save</button>
+                                <button class="btn btn-outline" id="share-result-btn"><i class="fas fa-share-alt"></i> Share</button>
+                                <button class="btn btn-outline" id="print-result-btn"><i class="fas fa-print"></i> Print</button>
                             </div>
                         </div>
                         
-                        <div class="similar-cases">
-                            <h4>Similar Cases & Community Solutions</h4>
-                            <div class="similar-case-cards">
-                                <div class="similar-case">
-                                    <img src="https://via.placeholder.com/60" alt="Similar Case">
-                                    <div class="case-info">
-                                        <h5>Wheat Leaf Blight</h5>
-                                        <p>Solved by using organic neem oil spray</p>
-                                        <a href="#">View Details</a>
+                        <div class="card">
+                            <div class="card-header">
+                                <h4>Similar Cases & Community Solutions</h4>
+                            </div>
+                            <div class="card-content">
+                                <div class="similar-cases">
+                                    <div class="similar-case">
+                                        <img src="https://via.placeholder.com/60" alt="Similar Case">
+                                        <div class="case-info">
+                                            <h5>Wheat Leaf Blight</h5>
+                                            <p>Solved by using organic neem oil spray</p>
+                                            <a href="#" class="link">View Details</a>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="similar-case">
-                                    <img src="https://via.placeholder.com/60" alt="Similar Case">
-                                    <div class="case-info">
-                                        <h5>Rice Leaf Blight</h5>
-                                        <p>Treated with copper-based fungicide</p>
-                                        <a href="#">View Details</a>
+                                    <div class="similar-case">
+                                        <img src="https://via.placeholder.com/60" alt="Similar Case">
+                                        <div class="case-info">
+                                            <h5>Rice Leaf Blight</h5>
+                                            <p>Treated with copper-based fungicide</p>
+                                            <a href="#" class="link">View Details</a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -350,258 +550,410 @@
 
             <!-- Yield Prediction Page -->
             <div class="page" id="yield-prediction-page">
-                <!-- Yield prediction content remains unchanged -->
-                <!-- ... (include all original yield prediction content here) ... -->
+                <h2 class="page-title">Crop Yield Prediction</h2>
+                
+                <div class="yield-prediction-container">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>Enter Crop Details</h4>
+                        </div>
+                        <div class="card-content">
+                            <form id="yield-prediction-form">
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label for="crop-type">Crop Type</label>
+                                        <select id="crop-type">
+                                            <option value="wheat">Wheat</option>
+                                            <option value="rice">Rice</option>
+                                            <option value="maize">Maize</option>
+                                            <option value="potato">Potato</option>
+                                            <option value="cotton">Cotton</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="soil-type">Soil Type</label>
+                                        <select id="soil-type">
+                                            <option value="loamy">Loamy</option>
+                                            <option value="sandy">Sandy</option>
+                                            <option value="clay">Clay</option>
+                                            <option value="silt">Silty</option>
+                                            <option value="black">Black</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="area">Area (Acres)</label>
+                                        <input type="number" id="area" min="0.1" step="0.1" value="5">
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="sowing-date">Sowing Date</label>
+                                        <input type="date" id="sowing-date">
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="irrigation">Irrigation Type</label>
+                                        <select id="irrigation">
+                                            <option value="drip">Drip Irrigation</option>
+                                            <option value="sprinkler">Sprinkler</option>
+                                            <option value="flood">Flood Irrigation</option>
+                                            <option value="rainfed">Rainfed</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="fertilizer">Fertilizer Used</label>
+                                        <select id="fertilizer">
+                                            <option value="npk">NPK</option>
+                                            <option value="urea">Urea</option>
+                                            <option value="organic">Organic</option>
+                                            <option value="mixed">Mixed</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <button type="submit" class="btn btn-primary btn-block" id="predict-yield-btn">Predict Yield</button>
+                            </form>
+                        </div>
+                    </div>
+                    
+                    <div id="yield-results" class="hidden">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4>Yield Prediction Results</h4>
+                            </div>
+                            <div class="card-content">
+                                <div class="yield-stats">
+                                    <div class="yield-stat">
+                                        <div class="yield-stat-icon">
+                                            <i class="fas fa-chart-line"></i>
+                                        </div>
+                                        <div class="yield-stat-info">
+                                            <p class="yield-stat-label">Estimated Yield</p>
+                                            <p class="yield-stat-value"><span id="yield-value">42</span> Quintals/Acre</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="yield-stat">
+                                        <div class="yield-stat-icon">
+                                            <i class="fas fa-calendar"></i>
+                                        </div>
+                                        <div class="yield-stat-info">
+                                            <p class="yield-stat-label">Harvest Time</p>
+                                            <p class="yield-stat-value">~120 Days</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="yield-stat">
+                                        <div class="yield-stat-icon">
+                                            <i class="fas fa-map-marker-alt"></i>
+                                        </div>
+                                        <div class="yield-stat-info">
+                                            <p class="yield-stat-label">Estimated Revenue</p>
+                                            <p class="yield-stat-value">₹<span id="revenue-value">84,000</span></p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="yield-stat">
+                                        <div class="yield-stat-icon">
+                                            <i class="fas fa-leaf"></i>
+                                        </div>
+                                        <div class="yield-stat-info">
+                                            <p class="yield-stat-label">Compared to Avg.</p>
+                                            <p class="yield-stat-value text-success"><span id="comparison-value">+8%</span></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-header-with-icon">
+                                    <i class="fas fa-lightbulb text-warning"></i>
+                                    <h4>Recommendations</h4>
+                                </div>
+                            </div>
+                            <div class="card-content">
+                                <ul class="recommendations-list">
+                                    <li>
+                                        <i class="fas fa-tint text-info"></i>
+                                        <div>
+                                            <p class="recommendation-title">Optimize Irrigation</p>
+                                            <p class="recommendation-text">Maintain consistent soil moisture levels. Consider increasing irrigation frequency during flowering stage.</p>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <i class="fas fa-thermometer-half text-danger"></i>
+                                        <div>
+                                            <p class="recommendation-title">Temperature Management</p>
+                                            <p class="recommendation-text">Monitor night temperatures. Consider protective measures if temperatures drop below 10°C.</p>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <i class="fas fa-leaf text-success"></i>
+                                        <div>
+                                            <p class="recommendation-title">Nutrient Management</p>
+                                            <p class="recommendation-text">Apply additional nitrogen fertilizer (10kg/acre) during the vegetative growth phase.</p>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="card-footer">
+                                <button class="btn btn-outline btn-block" id="generate-report-btn">Generate Detailed Report</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <!-- Market Info Page -->
             <div class="page" id="market-info-page">
                 <h2 class="page-title">Market Information</h2>
-                <!-- Market info content -->
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Current Market Prices</h4>
+                        <div class="card-actions">
+                            <button class="btn btn-outline btn-sm" id="refresh-market-btn">
+                                <i class="fas fa-sync-alt"></i>
+                                <span>Refresh</span>
+                            </button>
+                            <button class="btn btn-outline btn-sm" title="Filter Markets">
+                                <i class="fas fa-filter"></i>
+                                <span>Filter</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <div class="market-filters">
+                            <div class="search-box">
+                                <i class="fas fa-search"></i>
+                                <input type="text" placeholder="Search crops or markets...">
+                            </div>
+                            <div class="filter-selects">
+                                <select id="market-crop-filter" aria-label="Filter by crop type">
+                                    <option value="all">All Crops</option>
+                                    <option value="wheat">Wheat</option>
+                                    <option value="rice">Rice</option>
+                                    <option value="maize">Maize</option>
+                                    <option value="potato">Potato</option>
+                                </select>
+                                
+                                <select id="market-location-filter" aria-label="Filter by location">
+                                    <option value="all">All Locations</option>
+                                    <option value="punjab">Punjab</option>
+                                    <option value="haryana">Haryana</option>
+                                    <option value="up">Uttar Pradesh</option>
+                                    <option value="delhi">Delhi</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="table-container">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Crop</th>
+                                        <th>Variety</th>
+                                        <th>Market</th>
+                                        <th class="text-right">Price (₹/Quintal)</th>
+                                        <th class="text-center">Trend</th>
+                                        <th>Last Updated</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="market-data-table">
+                                    <!-- Market data will be inserted here by JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <div class="data-source">
+                            Data source: Agricultural Produce Market Committee (APMC)
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="market-charts">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>Price Trends (Last 30 Days)</h4>
+                        </div>
+                        <div class="card-content">
+                            <div class="chart-container">
+                                <canvas id="price-comparison-chart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>Market Comparison</h4>
+                        </div>
+                        <div class="card-content">
+                            <div class="chart-container">
+                                <canvas id="market-comparison-chart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <!-- Nearby Markets Page -->
             <div class="page" id="nearby-markets-page">
                 <h2 class="page-title">Nearby Markets</h2>
-                <div class="map-filters">
-                    <select id="radius-filter" aria-label="Select search radius">
-                        <option value="5">5 km</option>
-                        <option value="10">10 km</option>
-                    </select>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Find Markets Near You</h4>
+                        <div class="card-actions">
+                            <select id="radius-filter" aria-label="Filter markets by radius">
+                                <option value="5">5 km</option>
+                                <option value="10" selected>10 km</option>
+                                <option value="20">20 km</option>
+                                <option value="50">50 km</option>
+                            </select>
+                            <button class="btn btn-outline btn-sm" title="Filter Markets">
+                                <i class="fas fa-filter"></i>
+                                <span>Filter</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <div class="market-filters">
+                            <div class="search-box">
+                                <i class="fas fa-search"></i>
+                                <input type="text" placeholder="Search markets or crops...">
+                            </div>
+                            <div class="filter-selects">
+                                <select id="market-crop-type" aria-label="Filter markets by crop type">
+                                    <option value="all">All Crops</option>
+                                    <option value="wheat">Wheat</option>
+                                    <option value="rice">Rice</option>
+                                    <option value="vegetables">Vegetables</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="map-container">
+                            <iframe 
+                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3424.891882559732!2d76.2207613!3d30.8797152!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x391a83a2d1822399%3A0x1b8b7f2f0a4b5b8c!2sKhanna%2C%20Punjab!5e0!3m2!1sen!2sin!4v1650000000000!5m2!1sen!2sin"
+                                class="map-frame"
+                                title="Map showing nearby markets"
+                                allowfullscreen></iframe>
+                            <button class="btn btn-sm location-btn">
+                                <i class="fas fa-location-arrow"></i> Use Current Location
+                            </button>
+                        </div>
+                        
+                        <div class="markets-grid" id="markets-grid">
+                            <!-- Market cards will be inserted here by JavaScript -->
+                        </div>
+                    </div>
                 </div>
-                <div id="market-map" class="map-container"><iframe src="https://www.google.com/maps/d/embed?mid=1yxe8VpI5cjc3jSAmEwMnCk0y9Q2B3s0&ehbc=2E312F" width="980" height="800"></iframe></div>
-                <div class="market-list" id="market-list"></div>
             </div>
 
             <!-- Government Policies Page -->
             <div class="page" id="policies-page">
                 <h2 class="page-title">Government Policies</h2>
-                <div class="policy-filters">
-                    <button class="btn active" data-filter="all">All</button>
-                    <button class="btn" data-filter="subsidy">Subsidies</button>
-                    <button class="btn" data-filter="loan">Loans</button>
-                </div>
-                <div class="policy-grid" id="policy-container"></div>
-            </div>
-        </div>
-    </main>
-
-    <!-- Global Components -->
-    <div class="loader" id="global-loader">
-        <div class="spinner"></div>
-    </div>
-
-    <!-- Notification Toast -->
-    <div class="notification-toast" id="notification-toast">
-        <div class="notification-icon">
-            <i class="fas fa-info-circle"></i>
-        </div>
-        <div class="notification-content">
-            <p class="notification-message">This is a notification message</p>
-        </div>
-        <button class="close-notification" title="Close notification">
-            <i class="fas fa-times"></i>
-        </button>
-    </div>
-
-    <!-- Modal Container -->
-    <div class="modal-container" id="modal-container">
-        <!-- Forgot Password Modal -->
-        <div class="modal" id="forgot-password-modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3>Reset Password</h3>
-                    <button class="close-modal">&times;</button>
-                </div>
-                <div class="modal-body">
-                    <form id="forgot-password-form">
-                        <div class="form-group">
-                            <label for="reset-phone">Phone Number</label>
-                            <input type="tel" id="reset-phone" required>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Agricultural Policies & Schemes</h4>
+                    </div>
+                    <div class="card-content">
+                        <div class="policy-filters">
+                            <div class="search-box">
+                                <i class="fas fa-search"></i>
+                                <input type="text" placeholder="Search policies...">
+                            </div>
+                            <div class="filter-buttons">
+                                <button class="btn btn-filter active" data-filter="all">All</button>
+                                <button class="btn btn-filter" data-filter="subsidy">Subsidies</button>
+                                <button class="btn btn-filter" data-filter="loan">Loans</button>
+                                <button class="btn btn-filter" data-filter="insurance">Insurance</button>
+                                <button class="btn btn-outline btn-sm" title="Additional Filters">
+                                    <i class="fas fa-filter"></i>
+                                </button>
+                            </div>
                         </div>
-                        <button type="submit" class="btn btn-primary">Send Reset OTP</button>
-                    </form>
+                        
+                        <div class="policies-grid" id="policies-grid">
+                            <!-- Policy cards will be inserted here by JavaScript -->
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-
-    <!-- Voice Assistant Dialog -->
-    <div class="voice-assistant-dialog" id="voice-assistant-dialog">
-        <div class="voice-dialog-header">
-            <h3>Voice Assistant</h3>
-            <button class="close-voice-dialog">&times;</button>
-        </div>
-        <div class="voice-dialog-body">
-            <div class="voice-listening-indicator">
-                <div class="voice-wave"></div>
-                <p>Listening...</p>
-            </div>
-            <div class="voice-response">
-                <p>How can I help you today?</p>
-            </div>
-        </div>
-        <div class="voice-dialog-footer">
-            <button class="voice-cancel-btn">Cancel</button>
-            <button class="voice-submit-btn">Submit</button>
-        </div>
+        </main>
     </div>
 
     <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-content">
-            <div class="footer-logo">
-                <img src="https://via.placeholder.com/40" alt="FarmGenius Logo">
+    <div class="footer-layout">
+        <footer class="footer">
+          <div class="container">
+            <div class="footer-content">
+              <div class="footer-logo">
+                <img src="logo.png" alt="FarmGenius Logo" width="100" height="100">
                 <h3>FarmGenius</h3>
-            </div>
-            <div class="footer-links">
-                <div class="footer-column">
-                    <h4>Quick Links</h4>
-                    <a href="#">Home</a>
-                    <a href="#">About Us</a>
-                    <a href="#">Features</a>
-                    <a href="#">Contact</a>
-                </div>
-                <div class="footer-column">
-                    <h4>Help & Support</h4>
-                    <a href="#">FAQ</a>
-                    <a href="#">User Guide</a>
-                    <a href="#">Support</a>
-                </div>
-                <div class="footer-column">
-                    <h4>Legal</h4>
-                    <a href="#">Privacy Policy</a>
-                    <a href="#">Terms of Use</a>
-                </div>
-            </div>
-            <div class="footer-contact">
-                <h4>Contact Us</h4>
-                <p><i class="fas fa-phone"></i> +91 1234567890</p>
-                <p><i class="fas fa-envelope"></i> support@farmgenius.com</p>
-                <div class="social-icons">
-                    <a href="#" title="Visit our Facebook page"><i class="fab fa-facebook"></i></a>
-                    <a href="#" title="Visit our Twitter page"><i class="fab fa-twitter"></i></a>
-                    <a href="#" title="Visit our Instagram page"><i class="fab fa-instagram"></i></a>
-                    <a href="#" title="Visit our YouTube channel"><i class="fab fa-youtube"></i></a>
-                </div>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>&copy; 2025 FarmGenius. All rights reserved.</p>
-        </div>
-    </footer>
-    <script type="text/javascript">
-        function googleTranslateElementInit() {
-          new google.translate.TranslateElement({
-            pageLanguage: 'en',
-            includedLanguages: 'en,hi,pa,ta,mr',
-            layout: google.translate.TranslateElement.InlineLayout.SIMPLE
-          }, 'google_translate_element');
-        }
-      </script>
+                <p>Smart agriculture assistant powered by AI/ML technology to help farmers maximize yield and profits.</p>
+              </div>
       
-      <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-      <script>
-        document.getElementById('language-select').addEventListener('change', function () {
-            const selectedLang = this.value;
-        
-            const iframe = document.querySelector('iframe.goog-te-menu-frame');
-            if (!iframe) {
-                alert("Translation frame not loaded yet. Please wait a second.");
-                return;
-            }
-        
-            const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-            const langItems = iframeDoc.querySelectorAll('.goog-te-menu2-item span.text');
-        
-            langItems.forEach(item => {
-                const langText = item.innerText.trim().toLowerCase();
-                if (langText.includes(getLanguageName(selectedLang))) {
-                    item.click();
-                }
-            });
-        });
-        
-        // Map language codes to Google Translate language names
-        function getLanguageName(code) {
-            const langMap = {
-                en: 'english',
-                hi: 'hindi',
-                pa: 'punjabi',
-                ta: 'tamil',
-                mr: 'marathi',
-                
-            };
-            return langMap[code] || 'english';
-        }
-      </script>
-              
-    <script src="script.js"></script>
-    
-    <!-- Page Navigation Script -->
-    <script>
-        // Function to navigate to a specific page
-        function navigateToPage(pageId) {
-            // Hide all pages first
-            document.querySelectorAll('.page').forEach(page => {
-                page.classList.remove('active');
-            });
-            
-            // Show the requested page
-            const targetPage = document.getElementById(`${pageId}-page`);
-            if (targetPage) {
-                targetPage.classList.add('active');
-                
-                // Update active state in sidebar links
-                document.querySelectorAll('.sidebar-links a').forEach(link => {
-                    link.classList.remove('active');
-                    if (link.getAttribute('data-page') === pageId) {
-                        link.classList.add('active');
-                    }
-                });
-                
-                // Show loading animation (optional)
-                const loader = document.getElementById('global-loader');
-                if (loader) {
-                    loader.style.display = 'flex';
-                    setTimeout(() => {
-                        loader.style.display = 'none';
-                    }, 500); // Hide after 500ms
-                }
-                
-                // Scroll to top of the page
-                window.scrollTo(0, 0);
-            }
-        }
+              <div class="footer-links">
+                <div class="footer-column">
+                  <h4>Quick Links</h4>
+                  <a href="#">Home</a>
+                  <a href="#">About Us</a>
+                  <a href="#">Features</a>
+                  <a href="#">Contact</a>
+                </div>
+      
+                <div class="footer-column">
+                  <h4>Help & Support</h4>
+                  <a href="#">FAQ</a>
+                  <a href="#">User Guide</a>
+                  <a href="#">Support</a>
+                  <a href="#">Privacy Policy</a>
+                  <a href="#">Terms of Use</a>
+                </div>
+      
+                <div class="footer-column">
+                  <h4>Contact Us</h4>
+                  <p><i class="fas fa-phone"></i> +91 1234567890</p>
+                  <p><i class="fas fa-envelope"></i> support@farmgenius.com</p>
+                  <div class="social-icons">
+                    <a href="#" title="Visit our Facebook page"><i class="fab fa-facebook" aria-hidden="true"></i><span class="sr-only">Facebook</span></a>
+                    <a href="#" title="Visit our Twitter page"><i class="fab fa-twitter" aria-hidden="true"></i><span class="sr-only">Twitter</span></a>
+                    <a href="#" title="Visit our Instagram page"><i class="fab fa-instagram" aria-hidden="true"></i><span class="sr-only">Instagram</span></a>
+                    <a href="#" title="Visit our YouTube channel"><i class="fab fa-youtube" aria-hidden="true"></i><span class="sr-only">YouTube</span></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+      
+            <div class="footer-bottom">
+              <p>&copy; <span id="current-year">2025</span> FarmGenius. All rights reserved.</p>
+            </div>
+          </div>
+        </footer>
+      </div>
 
-        // Add event listeners to the quick action buttons on dashboard
-        document.addEventListener('DOMContentLoaded', function() {
-            // Get all quick action buttons
-            const actionButtons = document.querySelectorAll('.quick-actions .action-card .btn');
-            
-            // Add click event listeners to each button
-            actionButtons.forEach(button => {
-                button.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const targetPage = this.getAttribute('data-page');
-                    if (targetPage) {
-                        navigateToPage(targetPage);
-                    }
-                });
-            });
-            
-            // Also add navigation for sidebar links
-            const sidebarLinks = document.querySelectorAll('.sidebar-links a');
-            sidebarLinks.forEach(link => {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const targetPage = this.getAttribute('data-page');
-                    if (targetPage) {
-                        navigateToPage(targetPage);
-                    }
-                });
-            });
-        });
-    </script>
+    <!-- Toast Notification -->
+    <div class="toast-container" id="toast-container">
+        <!-- Toast notifications will be inserted here by JavaScript -->
+    </div>
+
+    <!-- Loader -->
+    <div class="loader" id="loader">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
+    <!-- Translation Loader -->
+    <div class="translation-loader" style="display: none;">
+    <div class="translation-spinner"></div>
+    <p>Changing language...</p>
+    </div> 
 </body>
 </html>
